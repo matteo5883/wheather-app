@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Added Swagger/OpenAPI documentation (`springdoc-openapi-starter-webmvc-ui`).
 - Added `CityControllerTest` using `@WebMvcTest` and `@MockitoBean`.
 - Added `SecurityConfig` to permit all requests to `/api/**` and Swagger UI endpoints, disabling authentication for development.
+- Added `spring-boot-devtools` dependency to enable automatic application restart on code changes.
 
 ### Removed
 
