@@ -16,3 +16,7 @@ All notable changes to this project will be documented in this file.
 - Implemented `CityController` with `GET /api/cities` endpoint.
 - Added Swagger/OpenAPI documentation (`springdoc-openapi-starter-webmvc-ui`).
 - Added `CityControllerTest` using `@WebMvcTest` and `@MockitoBean`.
+
+### Removed
+
+- Removed `spring-boot-starter-data-jpa` dependency to prevent unwanted datasource auto-configuration.
