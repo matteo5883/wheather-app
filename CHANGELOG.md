@@ -20,3 +20,8 @@ All notable changes to this project will be documented in this file.
 ### Removed
 
 - Removed `spring-boot-starter-data-jpa` dependency to prevent unwanted datasource auto-configuration.
+
+### Fixed
+
+- Added `@Configuration` annotation to `RestClientConfig` to properly expose the `RestClient` bean.
+- Updated `OpenWeatherMapServiceImpl` to include the `appid` query parameter, leveraging the default URI variable configured in `RestClientConfig`.

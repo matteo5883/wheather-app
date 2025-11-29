@@ -34,6 +34,7 @@ public class OpenWeatherMapServiceImpl implements OpenWeatherMapService {
                         .path("/geo/1.0/direct")
                         .queryParam("q", query)
                         .queryParam("limit", limit > 0 ? limit : 5)
+                        .queryParam("appid", "{appId}")
                         .build())
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<City>>() {
