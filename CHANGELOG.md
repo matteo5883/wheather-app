@@ -26,3 +26,9 @@ All notable changes to this project will be documented in this file.
 
 - Added `@Configuration` annotation to `RestClientConfig` to properly expose the `RestClient` bean.
 - Updated `OpenWeatherMapServiceImpl` to include the `appid` query parameter, leveraging the default URI variable configured in `RestClientConfig`.
+
+### Changed
+
+- Updated `City` model to map `local_names` JSON field to `locales` map using `@JsonProperty`.
+- Changed `locales` type from `List<String>` to `Map<String, String>` to correctly represent the data structure.
+- Added `CityTest` to verify JSON deserialization.

@@ -1,6 +1,8 @@
 package com.mpezzanera.app.whather_app.model;
 
-import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
@@ -11,5 +13,7 @@ public class City {
     private String countryCode;
     private double lat;
     private double lon;
-    private List<String> locales;
+
+    @JsonProperty("local_names")
+    private Map<String, String> locales;
 }
