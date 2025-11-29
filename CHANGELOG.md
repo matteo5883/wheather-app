@@ -32,3 +32,4 @@ All notable changes to this project will be documented in this file.
 - Updated `City` model to map `local_names` JSON field to `locales` map using `@JsonProperty`.
 - Changed `locales` type from `List<String>` to `Map<String, String>` to correctly represent the data structure.
 - Added `CityTest` to verify JSON deserialization.
+- Updated `City` model field name from `countryCode` to `state` to reflect value returned by the API

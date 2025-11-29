@@ -10,7 +10,7 @@ import lombok.Data;
 public class City {
     private String name;
     private String country;
-    private String countryCode;
+    private String state;
     private double lat;
     private double lon;
 
