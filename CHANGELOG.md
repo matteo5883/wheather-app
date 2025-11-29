@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Implemented `CityController` with `GET /api/cities` endpoint.
 - Added Swagger/OpenAPI documentation (`springdoc-openapi-starter-webmvc-ui`).
 - Added `CityControllerTest` using `@WebMvcTest` and `@MockitoBean`.
+- Added `SecurityConfig` to permit all requests to `/api/**` and Swagger UI endpoints, disabling authentication for development.
 
 ### Removed
 
