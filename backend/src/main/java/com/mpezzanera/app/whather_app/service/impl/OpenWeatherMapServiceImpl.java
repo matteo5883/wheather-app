@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClient;
 
+import com.mpezzanera.app.whather_app.mapper.WeatherMapper;
 import com.mpezzanera.app.whather_app.model.City;
+import com.mpezzanera.app.whather_app.model.Weather;
+import com.mpezzanera.app.whather_app.model.WeatherOpenMap;
 import com.mpezzanera.app.whather_app.service.OpenWeatherMapService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class OpenWeatherMapServiceImpl implements OpenWeatherMapService {
 
     private final RestClient restClient;
+    private final WeatherMapper weatherMapper;
 
     private boolean isNullString(String str) {
         return !StringUtils.hasLength(str) || (str != null && str.trim().isEmpty());
@@ -50,6 +54,23 @@ public class OpenWeatherMapServiceImpl implements OpenWeatherMapService {
             queryBuilder.append(",").append(countryCode);
         }
         return queryBuilder.toString();
+    }
+
+    @Override
+    public Weather getWeather(double lat, double lon, String units, String lang) {
+        WeatherOpenMap response = restClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/data/2.5/weather")
+                        .queryParam("lat", lat)
+                        .queryParam("lon", lon)
+                        .queryParam("units", isNullString(units) ? "metric" : units)
+                        .queryParam("lang", isNullString(lang) ? "en" : lang)
+                        .queryParam("appid", "{appId}")
+                        .build())
+                .retrieve()
+                .body(WeatherOpenMap.class);
+
+        return weatherMapper.toWeather(response);
     }
 
 }
