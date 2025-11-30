@@ -21,6 +21,8 @@ All notable changes to this project will be documented in this file.
 - Implemented `WeatherOpenMap` model based on OpenWeatherMap API response structure.
 - Added `WeatherOpenMapTest` to verify JSON deserialization.
 - Added `Weather` model class to return a subset of the data returned by the OpenWeatherMapApi and added `WeatherTest` to verify JSON serialization and deserialization for the `Weather` model.
+- Implemented `WeatherMapper` to convert `WeatherOpenMap` to `Weather` domain model.
+- Added `WeatherMapperTest` to verify mapping logic.
 
 ### Removed
 
