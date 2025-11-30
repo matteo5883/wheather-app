@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Added `Weather` model class to return a subset of the data returned by the OpenWeatherMapApi and added `WeatherTest` to verify JSON serialization and deserialization for the `Weather` model.
 - Implemented `WeatherMapper` to convert `WeatherOpenMap` to `Weather` domain model.
 - Added `WeatherMapperTest` to verify mapping logic.
+- Added missing file `application.properties` in test folder
 
 ### Removed
 

@@ -30,7 +30,7 @@ class WeatherTest {
         weather.setMainPressure(1012);
         weather.setMainHumidity(60);
         weather.setTimezone(3600);
-        
+
         LocalDateTime now = LocalDateTime.of(2023, 10, 1, 12, 0, 0);
         weather.setTimestamp(now);
         weather.setSunrise(now.minusHours(6));
