@@ -42,7 +42,7 @@ class CityControllerTest {
                 .thenReturn(cities);
 
         // Act & Assert
-        mockMvc.perform(get("/api/cities")
+        mockMvc.perform(get("/api/v1/cities")
                 .param("name", "London")
                 .param("state", "")
                 .param("country", "GB")
@@ -54,7 +54,7 @@ class CityControllerTest {
     
     @Test
     void getCities_shouldReturnBadRequest_whenNameIsMissing() throws Exception {
-        mockMvc.perform(get("/api/cities")
+        mockMvc.perform(get("/api/v1/cities")
                 .param("country", "GB"))
                 .andExpect(status().isBadRequest());
     }

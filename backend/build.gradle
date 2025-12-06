@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.mpezzanera.app'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 description = 'Wheather REST Api application with openweathermap'
 
 java {

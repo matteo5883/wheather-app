@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.0.1] - 2025-12-06
 
 ### Added
 
@@ -25,9 +25,11 @@ All notable changes to this project will be documented in this file.
 - Added `WeatherMapperTest` to verify mapping logic.
 - Added missing file `application.properties` in test folder
 - Added method `getWeather` to class `OpenWeatherMapService` and relative test.
-- Implemented `WeatherController` with `GET /api/weather` endpoint to retrieve weather data by coordinates.
+- Implemented `WeatherController` with `GET /api/v1/weather` endpoint to retrieve weather data by coordinates.
 - Added `WeatherControllerTest` to verify weather endpoint functionality.
 - Added Swagger documentation for weather endpoint.
+- Added API versioning (v1) to all endpoints (`/api/v1/cities`, `/api/v1/weather`).
+- Set application version to 0.0.1.
 
 ### Removed
 

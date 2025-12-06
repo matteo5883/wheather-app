@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/cities")
+@RequestMapping("/api/v1/cities")
 @RequiredArgsConstructor
 @Tag(name = "City Controller", description = "Endpoints for managing and retrieving city information")
 public class CityController {

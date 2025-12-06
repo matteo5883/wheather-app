@@ -39,7 +39,7 @@ class WeatherControllerTest {
                 .thenReturn(weather);
 
         // Act & Assert
-        mockMvc.perform(get("/api/weather")
+        mockMvc.perform(get("/api/v1/weather")
                 .param("lat", "45.4642")
                 .param("lon", "9.1900")
                 .param("units", "metric")
@@ -51,7 +51,7 @@ class WeatherControllerTest {
 
     @Test
     void getWeather_shouldReturnBadRequest_whenCoordinatesAreMissing() throws Exception {
-        mockMvc.perform(get("/api/weather")
+        mockMvc.perform(get("/api/v1/weather")
                 .param("units", "metric"))
                 .andExpect(status().isBadRequest());
     }

@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/weather")
+@RequestMapping("/api/v1/weather")
 @RequiredArgsConstructor
 @Tag(name = "Weather Controller", description = "Endpoints for retrieving weather information")
 public class WeatherController {
@@ -38,7 +38,7 @@ public class WeatherController {
             @Parameter(description = "Longitude", required = true) @RequestParam double lon,
             @Parameter(description = "Units of measurement (standard, metric, imperial). Default: metric") @RequestParam(required = false, defaultValue = "metric") String units,
             @Parameter(description = "Language code (e.g., en, it). Default: en") @RequestParam(required = false, defaultValue = "en") String lang) {
-        
+
         Weather weather = openWeatherMapService.getWeather(lat, lon, units, lang);
         return ResponseEntity.ok(weather);
     }
