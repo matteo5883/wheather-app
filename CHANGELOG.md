@@ -52,6 +52,8 @@ All notable changes to this project will be documented in this file.
 - Added responsive styling with gradient background for weather page.
 - Implemented loading states and error handling for all async operations.
 - Added comprehensive unit tests for `WeatherPage` component.
+- Configured routing to display `WeatherPage` as the main page (root route).
+- Simplified `app.html` to use only `<router-outlet />` for route rendering.
 
 ### Removed
 
