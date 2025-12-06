@@ -51,7 +51,7 @@ class CityControllerTest {
                 .andExpect(jsonPath("$[0].name").value("London"))
                 .andExpect(jsonPath("$[0].country").value("GB"));
     }
-    
+
     @Test
     void getCities_shouldReturnBadRequest_whenNameIsMissing() throws Exception {
         mockMvc.perform(get("/api/v1/cities")

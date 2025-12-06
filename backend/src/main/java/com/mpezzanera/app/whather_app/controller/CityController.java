@@ -38,7 +38,7 @@ public class CityController {
             @Parameter(description = "State code (optional)") @RequestParam(required = false) String state,
             @Parameter(description = "Country code (optional)") @RequestParam(required = false) String country,
             @Parameter(description = "Limit the number of results (default 5)") @RequestParam(defaultValue = "5") int limit) {
-        
+
         List<City> cities = openWeatherMapService.getCityByName(name, state, country, limit);
         return ResponseEntity.ok(cities);
     }
