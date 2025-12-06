@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [0.0.1] - 2025-12-06
 
-### Added
+### Backend
+
+#### Added
 
 - Initialized changelog file.
 
@@ -30,6 +32,17 @@ All notable changes to this project will be documented in this file.
 - Added Swagger documentation for weather endpoint.
 - Added API versioning (v1) to all endpoints (`/api/v1/cities`, `/api/v1/weather`).
 - Set application version to 0.0.1.
+
+### Frontend
+
+#### Added
+- Implemented `ApiService` with methods to call backend endpoints.
+- Added `getCities()` method to search cities by name.
+- Added `getWeather()` method to retrieve weather data by coordinates.
+- Created `City` and `Weather` TypeScript models.
+- Added `provideHttpClient` to application configuration.
+- Added comprehensive unit tests for `ApiService`.
+- Set frontend application version to 0.0.1.
 
 ### Removed
 
