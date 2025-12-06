@@ -2,49 +2,29 @@
   <div class="container">
     <h1>Weather App</h1>
 
-    <!-- Search Section -->
+    <!-- Search Button -->
     <div class="search-section">
-      <input
-        type="text"
-        [(ngModel)]="searchQuery"
-        (input)="searchCities()"
-        placeholder="Search for a city..."
-        class="search-input"
-      />
-
-      <!-- City Results -->
-      @if (cities.length > 0) {
-        <div class="city-results">
-          @for (city of cities; track city.name) {
-            <div class="city-item" (click)="selectCity(city)">
-              <span class="city-name">{{ city.name }}</span>
-              <span class="city-country">{{ city.country }}</span>
-            </div>
-          }
-        </div>
-      }
+      <button (click)="openSearchModal()" class="search-btn"><span>🔍</span> Search City</button>
     </div>
 
     <!-- Loading Indicator -->
     @if (loading) {
-      <div class="loading">Loading...</div>
+    <div class="loading">Loading...</div>
     }
 
     <!-- Error Message -->
     @if (error) {
-      <div class="error">{{ error }}</div>
+    <div class="error">{{ error }}</div>
     }
 
     <!-- Request Location Button -->
     @if (!weather && !loading && !locationEnabled) {
-      <button (click)="requestLocation()" class="location-btn">
-        Enable Location
-      </button>
+    <button (click)="requestLocation()" class="location-btn">Enable Location</button>
     }
 
     <!-- Weather Display -->
     @if (weather && !loading) {
-      <div class="weather-display">
+    <div class="weather-display">
       <div class="location-info">
         <h2>{{ currentLocation?.cityName }}</h2>
       </div>
@@ -94,7 +74,64 @@
           <span class="sun-value">{{ weather.sunset | date : 'shortTime' }}</span>
         </div>
       </div>
-      </div>
+    </div>
     }
   </div>
 </div>
+
+<!-- Search Modal -->
+@if (showSearchModal) {
+<div class="modal-overlay" (click)="closeSearchModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Search City</h2>
+      <button class="close-btn" (click)="closeSearchModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="search-input-group">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          placeholder="Enter city name..."
+          class="modal-search-input"
+          (keyup.enter)="searchCities()"
+        />
+        <button (click)="searchCities()" class="search-submit-btn" [disabled]="searchLoading">
+          @if (searchLoading) { Searching... } @else { Search }
+        </button>
+      </div>
+
+      @if (searchError) {
+      <div class="search-error">{{ searchError }}</div>
+      } @if (cities.length > 0) {
+      <div class="city-list">
+        <h3>Results</h3>
+        @for (city of cities; track city.name) {
+        <div
+          class="city-list-item"
+          [class.selected]="selectedCity?.name === city.name"
+          (click)="onCitySelect(city)"
+        >
+          <div class="city-info">
+            <span class="city-name">{{ city.name }}</span>
+            @if (city.state) {
+            <span class="city-state">, {{ city.state }}</span>
+            }
+          </div>
+          <span class="city-country">{{ city.country }}</span>
+        </div>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="modal-footer">
+      <button (click)="closeSearchModal()" class="cancel-btn">Cancel</button>
+      <button (click)="confirmCitySelection()" class="confirm-btn" [disabled]="!selectedCity">
+        OK
+      </button>
+    </div>
+  </div>
+</div>
+}

@@ -56,6 +56,13 @@ All notable changes to this project will be documented in this file.
 - Added comprehensive unit tests for `WeatherPage` component.
 - Configured routing to display `WeatherPage` as the main page (root route).
 - Simplified `app.html` to use only `<router-outlet />` for route rendering.
+- Implemented modal search functionality for city selection.
+- Added search button to trigger city search instead of real-time search.
+- Created modal popup with search input, results list, and confirmation buttons.
+- Added city selection with visual feedback (highlighted selected city).
+- Implemented OK/Cancel buttons in modal for user confirmation.
+- Added separate loading and error states for search modal.
+- Enhanced modal styling with animations and responsive design.
 
 ### Removed
 

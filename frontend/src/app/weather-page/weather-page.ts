@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 import { ApiService } from '../service/api-service';
 import { City } from '../models/city.model';
 import { Weather } from '../models/weather.model';
@@ -13,7 +13,7 @@ interface SavedLocation {
 
 @Component({
   selector: 'app-weather-page',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './weather-page.html',
   styleUrl: './weather-page.scss',
 })
@@ -25,6 +25,10 @@ export class WeatherPage implements OnInit {
   error: string | null = null;
   locationEnabled: boolean = false;
   currentLocation: SavedLocation | null = null;
+  showSearchModal: boolean = false;
+  selectedCity: City | null = null;
+  searchLoading: boolean = false;
+  searchError: string | null = null;
 
   constructor(private apiService: ApiService) {}
 
@@ -81,43 +85,78 @@ export class WeatherPage implements OnInit {
   }
 
   /**
-   * Search cities by name
+   * Open search modal
+   */
+  openSearchModal(): void {
+    this.showSearchModal = true;
+    this.searchQuery = '';
+    this.cities = [];
+    this.selectedCity = null;
+    this.searchError = null;
+  }
+
+  /**
+   * Close search modal
+   */
+  closeSearchModal(): void {
+    this.showSearchModal = false;
+    this.searchQuery = '';
+    this.cities = [];
+    this.selectedCity = null;
+    this.searchError = null;
+  }
+
+  /**
+   * Search cities by name (triggered by button)
    */
   searchCities(): void {
     if (!this.searchQuery || this.searchQuery.trim().length < 2) {
-      this.cities = [];
+      this.searchError = 'Please enter at least 2 characters';
       return;
     }
 
-    this.loading = true;
-    this.error = null;
+    this.searchLoading = true;
+    this.searchError = null;
 
     this.apiService.getCities(this.searchQuery.trim()).subscribe({
       next: (cities) => {
+        this.searchLoading = false;
         this.cities = cities;
-        this.loading = false;
+        if (cities.length === 0) {
+          this.searchError = 'No cities found. Try another search.';
+        }
       },
       error: (err) => {
-        this.error = 'Error searching cities. Please try again.';
-        this.loading = false;
+        this.searchLoading = false;
+        this.searchError = 'Error searching cities. Please try again.';
         console.error('Search error:', err);
       },
     });
   }
 
   /**
-   * Select a city and fetch its weather
+   * Select a city from search results
    */
-  selectCity(city: City): void {
+  onCitySelect(city: City): void {
+    this.selectedCity = city;
+  }
+
+  /**
+   * Confirm city selection and fetch weather
+   */
+  confirmCitySelection(): void {
+    if (!this.selectedCity) {
+      return;
+    }
+
     this.currentLocation = {
-      lat: city.lat,
-      lon: city.lon,
-      cityName: `${city.name}, ${city.country}`,
+      lat: this.selectedCity.lat,
+      lon: this.selectedCity.lon,
+      cityName: `${this.selectedCity.name}, ${this.selectedCity.country}`,
     };
     this.saveLocation(this.currentLocation);
-    this.fetchWeather(city.lat, city.lon);
-    this.cities = [];
-    this.searchQuery = '';
+    this.closeSearchModal();
+    this.fetchWeather(this.selectedCity.lat, this.selectedCity.lon);
   }
 
   /**
@@ -132,13 +171,13 @@ export class WeatherPage implements OnInit {
     this.apiService.getWeather(lat, lon).subscribe({
       next: (weather) => {
         console.log('Weather data received:', weather);
-        this.weather = weather;
         this.loading = false;
+        this.weather = weather;
       },
       error: (err) => {
         console.error('Weather error:', err);
-        this.error = 'Error fetching weather data. Please try again.';
         this.loading = false;
+        this.error = 'Error fetching weather data. Please try again.';
       },
     });
   }
