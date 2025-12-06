@@ -25,6 +25,9 @@ All notable changes to this project will be documented in this file.
 - Added `WeatherMapperTest` to verify mapping logic.
 - Added missing file `application.properties` in test folder
 - Added method `getWeather` to class `OpenWeatherMapService` and relative test.
+- Implemented `WeatherController` with `GET /api/weather` endpoint to retrieve weather data by coordinates.
+- Added `WeatherControllerTest` to verify weather endpoint functionality.
+- Added Swagger documentation for weather endpoint.
 
 ### Removed
 
