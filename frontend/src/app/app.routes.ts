@@ -4,6 +4,6 @@ import { WeatherPage } from './weather-page/weather-page';
 export const routes: Routes = [
   {
     path: '',
-    component: WeatherPage
-  }
+    component: WeatherPage,
+  },
 ];
