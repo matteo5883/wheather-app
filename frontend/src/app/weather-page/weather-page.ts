@@ -43,10 +43,8 @@ export class WeatherPage implements OnInit {
         this.fetchWeather(this.currentLocation!.lat, this.currentLocation!.lon);
       } catch (e) {
         console.error('Error parsing saved location', e);
-        this.requestLocation();
+        // Don't auto-request location on parse error
       }
-    } else {
-      this.requestLocation();
     }
   }
 
@@ -56,6 +54,7 @@ export class WeatherPage implements OnInit {
   requestLocation(): void {
     if (navigator.geolocation) {
       this.loading = true;
+      this.error = null;
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const lat = position.coords.latitude;
@@ -76,6 +75,7 @@ export class WeatherPage implements OnInit {
         }
       );
     } else {
+      this.loading = false;
       this.error = 'Geolocation is not supported by your browser.';
     }
   }
@@ -127,15 +127,18 @@ export class WeatherPage implements OnInit {
     this.loading = true;
     this.error = null;
 
+    console.log('Fetching weather for:', lat, lon);
+
     this.apiService.getWeather(lat, lon).subscribe({
       next: (weather) => {
+        console.log('Weather data received:', weather);
         this.weather = weather;
         this.loading = false;
       },
       error: (err) => {
+        console.error('Weather error:', err);
         this.error = 'Error fetching weather data. Please try again.';
         this.loading = false;
-        console.error('Weather error:', err);
       },
     });
   }

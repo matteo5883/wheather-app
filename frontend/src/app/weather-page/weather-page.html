@@ -13,31 +13,38 @@
       />
 
       <!-- City Results -->
-      <div class="city-results" *ngIf="cities.length > 0">
-        <div *ngFor="let city of cities" class="city-item" (click)="selectCity(city)">
-          <span class="city-name">{{ city.name }}</span>
-          <span class="city-country">{{ city.country }}</span>
+      @if (cities.length > 0) {
+        <div class="city-results">
+          @for (city of cities; track city.name) {
+            <div class="city-item" (click)="selectCity(city)">
+              <span class="city-name">{{ city.name }}</span>
+              <span class="city-country">{{ city.country }}</span>
+            </div>
+          }
         </div>
-      </div>
+      }
     </div>
 
     <!-- Loading Indicator -->
-    <div *ngIf="loading" class="loading">Loading...</div>
+    @if (loading) {
+      <div class="loading">Loading...</div>
+    }
 
     <!-- Error Message -->
-    <div *ngIf="error" class="error">{{ error }}</div>
+    @if (error) {
+      <div class="error">{{ error }}</div>
+    }
 
     <!-- Request Location Button -->
-    <button
-      *ngIf="!weather && !loading && !locationEnabled"
-      (click)="requestLocation()"
-      class="location-btn"
-    >
-      Enable Location
-    </button>
+    @if (!weather && !loading && !locationEnabled) {
+      <button (click)="requestLocation()" class="location-btn">
+        Enable Location
+      </button>
+    }
 
     <!-- Weather Display -->
-    <div *ngIf="weather && !loading" class="weather-display">
+    @if (weather && !loading) {
+      <div class="weather-display">
       <div class="location-info">
         <h2>{{ currentLocation?.cityName }}</h2>
       </div>
@@ -87,6 +94,7 @@
           <span class="sun-value">{{ weather.sunset | date : 'shortTime' }}</span>
         </div>
       </div>
-    </div>
+      </div>
+    }
   </div>
 </div>

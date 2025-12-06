@@ -65,6 +65,9 @@ All notable changes to this project will be documented in this file.
 
 - Added `@Configuration` annotation to `RestClientConfig` to properly expose the `RestClient` bean.
 - Updated `OpenWeatherMapServiceImpl` to include the `appid` query parameter, leveraging the default URI variable configured in `RestClientConfig`.
+- Fixed loading indicator not disappearing when geolocation is not supported or disabled.
+- Removed automatic geolocation request on localStorage parse error to prevent infinite loading.
+- Added console logging for weather fetch operations to aid debugging.
 
 ### Changed
 
@@ -72,3 +75,5 @@ All notable changes to this project will be documented in this file.
 - Changed `locales` type from `List<String>` to `Map<String, String>` to correctly represent the data structure.
 - Added `CityTest` to verify JSON deserialization.
 - Updated `City` model field name from `countryCode` to `state` to reflect value returned by the API
+- Migrated template syntax from `*ngIf` and `*ngFor` to new Angular control flow syntax (`@if`, `@for`).
+- Updated `weather-page.html` to use modern Angular 17+ block syntax for better performance and readability.
