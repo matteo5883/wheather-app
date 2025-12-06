@@ -44,6 +44,14 @@ All notable changes to this project will be documented in this file.
 - Added `provideHttpClient` to application configuration.
 - Added comprehensive unit tests for `ApiService`.
 - Set frontend application version to 0.0.1.
+- Implemented `WeatherPage` component to display weather data.
+- Added geolocation support to request user's current location.
+- Implemented localStorage persistence for selected location.
+- Added city search functionality with autocomplete results.
+- Created weather display with temperature, description, humidity, pressure, and sunrise/sunset times.
+- Added responsive styling with gradient background for weather page.
+- Implemented loading states and error handling for all async operations.
+- Added comprehensive unit tests for `WeatherPage` component.
 
 ### Removed
 
