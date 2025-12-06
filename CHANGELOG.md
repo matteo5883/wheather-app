@@ -84,3 +84,8 @@ All notable changes to this project will be documented in this file.
 - Updated `City` model field name from `countryCode` to `state` to reflect value returned by the API
 - Migrated template syntax from `*ngIf` and `*ngFor` to new Angular control flow syntax (`@if`, `@for`).
 - Updated `weather-page.html` to use modern Angular 17+ block syntax for better performance and readability.
+- **Migrated all component properties to Angular Signals for reactive state management**.
+- Converted all boolean, object, and array properties to signals with automatic change detection.
+- Updated template bindings to use signal syntax (calling signals as functions).
+- Replaced `[(ngModel)]` with `[ngModel]` and `(ngModelChange)` for signal compatibility.
+- Improved reactivity and performance with signals-based architecture.

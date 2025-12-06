@@ -8,70 +8,70 @@
     </div>
 
     <!-- Loading Indicator -->
-    @if (loading) {
+    @if (loading()) {
     <div class="loading">Loading...</div>
     }
 
     <!-- Error Message -->
-    @if (error) {
-    <div class="error">{{ error }}</div>
+    @if (error()) {
+    <div class="error">{{ error() }}</div>
     }
 
     <!-- Request Location Button -->
-    @if (!weather && !loading && !locationEnabled) {
+    @if (!weather() && !loading() && !locationEnabled()) {
     <button (click)="requestLocation()" class="location-btn">Enable Location</button>
     }
 
     <!-- Weather Display -->
-    @if (weather && !loading) {
+    @if (weather() && !loading()) {
     <div class="weather-display">
       <div class="location-info">
-        <h2>{{ currentLocation?.cityName }}</h2>
+        <h2>{{ currentLocation()?.cityName }}</h2>
       </div>
 
       <div class="weather-main">
         <div class="temperature">
-          <span class="temp-value">{{ weather.mainTemperature }}°C</span>
-          <span class="temp-feels-like">Feels like {{ weather.mainFeelsLike }}°C</span>
+          <span class="temp-value">{{ weather()!.mainTemperature }}°C</span>
+          <span class="temp-feels-like">Feels like {{ weather()!.mainFeelsLike }}°C</span>
         </div>
 
         <div class="weather-icon">
           <img
-            [src]="'https://openweathermap.org/img/wn/' + weather.weatherIcon + '@2x.png'"
-            [alt]="weather.weatherDescription"
+            [src]="'https://openweathermap.org/img/wn/' + weather()!.weatherIcon + '@2x.png'"
+            [alt]="weather()!.weatherDescription"
           />
-          <p class="weather-desc">{{ weather.weatherMain }}</p>
-          <p class="weather-desc-detail">{{ weather.weatherDescription }}</p>
+          <p class="weather-desc">{{ weather()!.weatherMain }}</p>
+          <p class="weather-desc-detail">{{ weather()!.weatherDescription }}</p>
         </div>
       </div>
 
       <div class="weather-details">
         <div class="detail-item">
           <span class="detail-label">Min</span>
-          <span class="detail-value">{{ weather.mainTempMin }}°C</span>
+          <span class="detail-value">{{ weather()!.mainTempMin }}°C</span>
         </div>
         <div class="detail-item">
           <span class="detail-label">Max</span>
-          <span class="detail-value">{{ weather.mainTempMax }}°C</span>
+          <span class="detail-value">{{ weather()!.mainTempMax }}°C</span>
         </div>
         <div class="detail-item">
           <span class="detail-label">Humidity</span>
-          <span class="detail-value">{{ weather.mainHumidity }}%</span>
+          <span class="detail-value">{{ weather()!.mainHumidity }}%</span>
         </div>
         <div class="detail-item">
           <span class="detail-label">Pressure</span>
-          <span class="detail-value">{{ weather.mainPressure }} hPa</span>
+          <span class="detail-value">{{ weather()!.mainPressure }} hPa</span>
         </div>
       </div>
 
       <div class="sun-times">
         <div class="sun-item">
           <span class="sun-label">Sunrise</span>
-          <span class="sun-value">{{ weather.sunrise | date : 'shortTime' }}</span>
+          <span class="sun-value">{{ weather()!.sunrise | date : 'shortTime' }}</span>
         </div>
         <div class="sun-item">
           <span class="sun-label">Sunset</span>
-          <span class="sun-value">{{ weather.sunset | date : 'shortTime' }}</span>
+          <span class="sun-value">{{ weather()!.sunset | date : 'shortTime' }}</span>
         </div>
       </div>
     </div>
@@ -80,7 +80,7 @@
 </div>
 
 <!-- Search Modal -->
-@if (showSearchModal) {
+@if (showSearchModal()) {
 <div class="modal-overlay" (click)="closeSearchModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
@@ -92,25 +92,26 @@
       <div class="search-input-group">
         <input
           type="text"
-          [(ngModel)]="searchQuery"
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
           placeholder="Enter city name..."
           class="modal-search-input"
           (keyup.enter)="searchCities()"
         />
-        <button (click)="searchCities()" class="search-submit-btn" [disabled]="searchLoading">
-          @if (searchLoading) { Searching... } @else { Search }
+        <button (click)="searchCities()" class="search-submit-btn" [disabled]="searchLoading()">
+          @if (searchLoading()) { Searching... } @else { Search }
         </button>
       </div>
 
-      @if (searchError) {
-      <div class="search-error">{{ searchError }}</div>
-      } @if (cities.length > 0) {
+      @if (searchError()) {
+      <div class="search-error">{{ searchError() }}</div>
+      } @if (cities().length > 0) {
       <div class="city-list">
         <h3>Results</h3>
-        @for (city of cities; track city.name) {
+        @for (city of cities(); track city.name) {
         <div
           class="city-list-item"
-          [class.selected]="selectedCity?.name === city.name"
+          [class.selected]="selectedCity()?.name === city.name"
           (click)="onCitySelect(city)"
         >
           <div class="city-info">
@@ -128,7 +129,7 @@
 
     <div class="modal-footer">
       <button (click)="closeSearchModal()" class="cancel-btn">Cancel</button>
-      <button (click)="confirmCitySelection()" class="confirm-btn" [disabled]="!selectedCity">
+      <button (click)="confirmCitySelection()" class="confirm-btn" [disabled]="!selectedCity()">
         OK
       </button>
     </div>

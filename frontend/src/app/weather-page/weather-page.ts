@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { ApiService } from '../service/api-service';
@@ -18,17 +18,17 @@ interface SavedLocation {
   styleUrl: './weather-page.scss',
 })
 export class WeatherPage implements OnInit {
-  weather: Weather | null = null;
-  cities: City[] = [];
-  searchQuery: string = '';
-  loading: boolean = false;
-  error: string | null = null;
-  locationEnabled: boolean = false;
-  currentLocation: SavedLocation | null = null;
-  showSearchModal: boolean = false;
-  selectedCity: City | null = null;
-  searchLoading: boolean = false;
-  searchError: string | null = null;
+  weather = signal<Weather | null>(null);
+  cities = signal<City[]>([]);
+  searchQuery = signal<string>('');
+  loading = signal<boolean>(false);
+  error = signal<string | null>(null);
+  locationEnabled = signal<boolean>(false);
+  currentLocation = signal<SavedLocation | null>(null);
+  showSearchModal = signal<boolean>(false);
+  selectedCity = signal<City | null>(null);
+  searchLoading = signal<boolean>(false);
+  searchError = signal<string | null>(null);
 
   constructor(private apiService: ApiService) {}
 
@@ -43,8 +43,9 @@ export class WeatherPage implements OnInit {
     const saved = localStorage.getItem('selectedLocation');
     if (saved) {
       try {
-        this.currentLocation = JSON.parse(saved);
-        this.fetchWeather(this.currentLocation!.lat, this.currentLocation!.lon);
+        const location = JSON.parse(saved);
+        this.currentLocation.set(location);
+        this.fetchWeather(location.lat, location.lon);
       } catch (e) {
         console.error('Error parsing saved location', e);
         // Don't auto-request location on parse error
@@ -57,30 +58,31 @@ export class WeatherPage implements OnInit {
    */
   requestLocation(): void {
     if (navigator.geolocation) {
-      this.loading = true;
-      this.error = null;
+      this.loading.set(true);
+      this.error.set(null);
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
-          this.locationEnabled = true;
-          this.currentLocation = {
+          this.locationEnabled.set(true);
+          const location = {
             lat,
             lon,
             cityName: 'Current Location',
           };
-          this.saveLocation(this.currentLocation);
+          this.currentLocation.set(location);
+          this.saveLocation(location);
           this.fetchWeather(lat, lon);
         },
         (error) => {
-          this.loading = false;
-          this.error = 'Unable to retrieve your location. Please search for a city.';
+          this.loading.set(false);
+          this.error.set('Unable to retrieve your location. Please search for a city.');
           console.error('Geolocation error:', error);
         }
       );
     } else {
-      this.loading = false;
-      this.error = 'Geolocation is not supported by your browser.';
+      this.loading.set(false);
+      this.error.set('Geolocation is not supported by your browser.');
     }
   }
 
@@ -88,47 +90,48 @@ export class WeatherPage implements OnInit {
    * Open search modal
    */
   openSearchModal(): void {
-    this.showSearchModal = true;
-    this.searchQuery = '';
-    this.cities = [];
-    this.selectedCity = null;
-    this.searchError = null;
+    this.showSearchModal.set(true);
+    this.searchQuery.set('');
+    this.cities.set([]);
+    this.selectedCity.set(null);
+    this.searchError.set(null);
   }
 
   /**
    * Close search modal
    */
   closeSearchModal(): void {
-    this.showSearchModal = false;
-    this.searchQuery = '';
-    this.cities = [];
-    this.selectedCity = null;
-    this.searchError = null;
+    this.showSearchModal.set(false);
+    this.searchQuery.set('');
+    this.cities.set([]);
+    this.selectedCity.set(null);
+    this.searchError.set(null);
   }
 
   /**
    * Search cities by name (triggered by button)
    */
   searchCities(): void {
-    if (!this.searchQuery || this.searchQuery.trim().length < 2) {
-      this.searchError = 'Please enter at least 2 characters';
+    const query = this.searchQuery();
+    if (!query || query.trim().length < 2) {
+      this.searchError.set('Please enter at least 2 characters');
       return;
     }
 
-    this.searchLoading = true;
-    this.searchError = null;
+    this.searchLoading.set(true);
+    this.searchError.set(null);
 
-    this.apiService.getCities(this.searchQuery.trim()).subscribe({
+    this.apiService.getCities(query.trim()).subscribe({
       next: (cities) => {
-        this.searchLoading = false;
-        this.cities = cities;
+        this.searchLoading.set(false);
+        this.cities.set(cities);
         if (cities.length === 0) {
-          this.searchError = 'No cities found. Try another search.';
+          this.searchError.set('No cities found. Try another search.');
         }
       },
       error: (err) => {
-        this.searchLoading = false;
-        this.searchError = 'Error searching cities. Please try again.';
+        this.searchLoading.set(false);
+        this.searchError.set('Error searching cities. Please try again.');
         console.error('Search error:', err);
       },
     });
@@ -138,46 +141,48 @@ export class WeatherPage implements OnInit {
    * Select a city from search results
    */
   onCitySelect(city: City): void {
-    this.selectedCity = city;
+    this.selectedCity.set(city);
   }
 
   /**
    * Confirm city selection and fetch weather
    */
   confirmCitySelection(): void {
-    if (!this.selectedCity) {
+    const city = this.selectedCity();
+    if (!city) {
       return;
     }
 
-    this.currentLocation = {
-      lat: this.selectedCity.lat,
-      lon: this.selectedCity.lon,
-      cityName: `${this.selectedCity.name}, ${this.selectedCity.country}`,
+    const location = {
+      lat: city.lat,
+      lon: city.lon,
+      cityName: `${city.name}, ${city.country}`,
     };
-    this.saveLocation(this.currentLocation);
+    this.currentLocation.set(location);
+    this.saveLocation(location);
     this.closeSearchModal();
-    this.fetchWeather(this.selectedCity.lat, this.selectedCity.lon);
+    this.fetchWeather(city.lat, city.lon);
   }
 
   /**
    * Fetch weather data for given coordinates
    */
   private fetchWeather(lat: number, lon: number): void {
-    this.loading = true;
-    this.error = null;
+    this.loading.set(true);
+    this.error.set(null);
 
     console.log('Fetching weather for:', lat, lon);
 
     this.apiService.getWeather(lat, lon).subscribe({
       next: (weather) => {
         console.log('Weather data received:', weather);
-        this.loading = false;
-        this.weather = weather;
+        this.loading.set(false);
+        this.weather.set(weather);
       },
       error: (err) => {
         console.error('Weather error:', err);
-        this.loading = false;
-        this.error = 'Error fetching weather data. Please try again.';
+        this.loading.set(false);
+        this.error.set('Error fetching weather data. Please try again.');
       },
     });
   }
