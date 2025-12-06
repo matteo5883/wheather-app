@@ -36,6 +36,7 @@ All notable changes to this project will be documented in this file.
 ### Frontend
 
 #### Added
+
 - Implemented `ApiService` with methods to call backend endpoints.
 - Added `getCities()` method to search cities by name.
 - Added `getWeather()` method to retrieve weather data by coordinates.

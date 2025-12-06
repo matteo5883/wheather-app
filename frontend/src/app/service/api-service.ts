@@ -20,15 +20,8 @@ export class ApiService {
    * @param limit Limit the number of results (default 5)
    * @returns Observable of City array
    */
-  getCities(
-    name: string,
-    state?: string,
-    country?: string,
-    limit: number = 5
-  ): Observable<City[]> {
-    let params = new HttpParams()
-      .set('name', name)
-      .set('limit', limit.toString());
+  getCities(name: string, state?: string, country?: string, limit: number = 5): Observable<City[]> {
+    let params = new HttpParams().set('name', name).set('limit', limit.toString());
 
     if (state) {
       params = params.set('state', state);
