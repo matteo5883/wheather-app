@@ -87,13 +87,17 @@ describe('WeatherPage', () => {
   });
 
   it('should initialize with default values', () => {
-    expect(component.weather).toBeNull();
-    expect(component.cities).toEqual([]);
-    expect(component.searchQuery).toBe('');
-    expect(component.loading).toBe(false);
-    expect(component.error).toBeNull();
-    expect(component.locationEnabled).toBe(false);
-    expect(component.currentLocation).toBeNull();
+    expect(component.weather()).toBeNull();
+    expect(component.cities()).toEqual([]);
+    expect(component.searchQuery()).toBe('');
+    expect(component.loading()).toBe(false);
+    expect(component.error()).toBeNull();
+    expect(component.locationEnabled()).toBe(false);
+    expect(component.currentLocation()).toBeNull();
+    expect(component.showSearchModal()).toBe(false);
+    expect(component.selectedCity()).toBeNull();
+    expect(component.searchLoading()).toBe(false);
+    expect(component.searchError()).toBeNull();
   });
 
   describe('requestLocation', () => {
@@ -117,8 +121,8 @@ describe('WeatherPage', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      expect(component.locationEnabled).toBe(true);
-      expect(component.currentLocation).toEqual({
+      expect(component.locationEnabled()).toBe(true);
+      expect(component.currentLocation()).toEqual({
         cityName: 'Current Location',
         lat: 51.5074,
         lon: -0.1278,
@@ -142,14 +146,14 @@ describe('WeatherPage', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      expect(component.error).toBe('Unable to retrieve your location. Please search for a city.');
-      expect(component.loading).toBe(false);
+      expect(component.error()).toBe('Unable to retrieve your location. Please search for a city.');
+      expect(component.loading()).toBe(false);
     });
   });
 
   describe('searchCities', () => {
     it('should search cities when query length >= 2', async () => {
-      component.searchQuery = 'London';
+      component.searchQuery.set('London');
       apiServiceMock.getCities.mockReturnValue(of([mockCity]));
 
       component.searchCities();
@@ -157,45 +161,74 @@ describe('WeatherPage', () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(apiServiceMock.getCities).toHaveBeenCalledWith('London');
-      expect(component.cities).toEqual([mockCity]);
+      expect(component.cities()).toEqual([mockCity]);
     });
 
-    it('should clear cities when query length < 2', () => {
-      component.searchQuery = 'L';
-      component.cities = [mockCity];
+    it('should set error when query length < 2', () => {
+      component.searchQuery.set('L');
 
       component.searchCities();
 
-      expect(component.cities).toEqual([]);
+      expect(component.searchError()).toBe('Please enter at least 2 characters');
       expect(apiServiceMock.getCities).not.toHaveBeenCalled();
     });
 
     it('should handle search error', async () => {
-      component.searchQuery = 'London';
+      component.searchQuery.set('London');
       apiServiceMock.getCities.mockReturnValue(throwError(() => new Error('API error')));
 
       component.searchCities();
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      expect(component.error).toBe('Error searching cities. Please try again.');
+      expect(component.searchError()).toBe('Error searching cities. Please try again.');
     });
   });
 
-  describe('selectCity', () => {
-    it('should select city and fetch weather', () => {
+  describe('modal operations', () => {
+    it('should open search modal', () => {
+      component.openSearchModal();
+
+      expect(component.showSearchModal()).toBe(true);
+      expect(component.searchQuery()).toBe('');
+      expect(component.cities()).toEqual([]);
+      expect(component.selectedCity()).toBeNull();
+      expect(component.searchError()).toBeNull();
+    });
+
+    it('should close search modal', () => {
+      component.showSearchModal.set(true);
+      component.searchQuery.set('test');
+      component.cities.set([mockCity]);
+      component.selectedCity.set(mockCity);
+
+      component.closeSearchModal();
+
+      expect(component.showSearchModal()).toBe(false);
+      expect(component.searchQuery()).toBe('');
+      expect(component.cities()).toEqual([]);
+      expect(component.selectedCity()).toBeNull();
+    });
+
+    it('should select city', () => {
+      component.onCitySelect(mockCity);
+
+      expect(component.selectedCity()).toEqual(mockCity);
+    });
+
+    it('should confirm city selection and fetch weather', () => {
       apiServiceMock.getWeather.mockReturnValue(of(mockWeather));
+      component.selectedCity.set(mockCity);
 
-      component.selectCity(mockCity);
+      component.confirmCitySelection();
 
-      expect(component.currentLocation).toEqual({
+      expect(component.currentLocation()).toEqual({
         cityName: 'London, GB',
         lat: 51.5074,
         lon: -0.1278,
       });
+      expect(component.showSearchModal()).toBe(false);
       expect(apiServiceMock.getWeather).toHaveBeenCalledWith(51.5074, -0.1278);
-      expect(component.cities).toEqual([]);
-      expect(component.searchQuery).toBe('');
     });
   });
 });

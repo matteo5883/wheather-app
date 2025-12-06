@@ -89,3 +89,8 @@ All notable changes to this project will be documented in this file.
 - Updated template bindings to use signal syntax (calling signals as functions).
 - Replaced `[(ngModel)]` with `[ngModel]` and `(ngModelChange)` for signal compatibility.
 - Improved reactivity and performance with signals-based architecture.
+- Updated all unit tests in `weather-page.spec.ts` to work with signals.
+- Modified test assertions to call signals as functions (e.g., `component.loading()` instead of `component.loading`).
+- Added tests for modal operations (open, close, city selection, confirmation).
+- Updated signal mutations in tests to use `.set()` method.
+- Fixed `app.spec.ts` test to verify router-outlet presence instead of non-existent h1 element.
