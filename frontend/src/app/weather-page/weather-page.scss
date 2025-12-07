@@ -329,6 +329,12 @@
     }
   }
 
+  .search-button-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   .search-error-card {
     margin-bottom: 1rem;
     background-color: #ffebee;
