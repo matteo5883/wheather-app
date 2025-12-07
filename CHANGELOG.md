@@ -111,3 +111,8 @@ All notable changes to this project will be documented in this file.
 - Enhanced location button with gradient background and prominent styling.
 - Applied palette colors to all interactive elements with improved hover effects.
 - Updated spinner color to match the green theme.
+- **Added footer component**.
+- Created `Footer` component with copyright information.
+- Styled footer with Soft Green gradient background matching app theme.
+- Footer displays dynamic year using `new Date().getFullYear()`.
+- Integrated footer into weather-page layout.

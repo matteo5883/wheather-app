@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
@@ -15,6 +15,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ApiService } from '../service/api-service';
 import { City } from '../models/city.model';
 import { Weather } from '../models/weather.model';
+import { Footer } from '../footer/footer';
 
 interface SavedLocation {
   lat: number;
@@ -38,6 +39,7 @@ interface SavedLocation {
     MatToolbarModule,
     MatDividerModule,
     MatChipsModule,
+    Footer,
   ],
   templateUrl: './weather-page.html',
   styleUrl: './weather-page.scss',

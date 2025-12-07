@@ -1,0 +1,14 @@
+.app-footer {
+  background: linear-gradient(90deg, #a7d7b8 0%, #b5e1b2 100%);
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 2px solid #c9e6b7;
+  margin-top: auto;
+
+  .copyright {
+    margin: 0;
+    color: #002106;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+}
