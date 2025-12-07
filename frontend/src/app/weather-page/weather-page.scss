@@ -10,21 +10,46 @@
   position: sticky;
   top: 0;
   z-index: 1000;
+  background: linear-gradient(135deg, #a7d7b8 0%, #b5e1b2 100%) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+  min-height: 80px;
+
+  .toolbar-content {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
 
   .toolbar-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+    color: #002106;
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .search-button {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     font-weight: 500;
-  }
+    background-color: #f6ffdb !important;
+    color: #002106 !important;
 
-  .spacer {
-    flex: 1 1 auto;
-  }
-
-  button {
-    transition: transform 0.2s ease;
-
-    &:hover {
-      transform: scale(1.1);
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
   }
 }
@@ -43,6 +68,12 @@
   justify-content: center;
   align-items: center;
   min-height: 300px;
+
+  mat-spinner {
+    ::ng-deep circle {
+      stroke: #3da149 !important;
+    }
+  }
 }
 
 .center-content {
@@ -52,10 +83,17 @@
   min-height: 400px;
 
   .location-btn {
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #a7d7b8 0%, #b5e1b2 100%) !important;
+    color: #002106 !important;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(167, 215, 184, 0.3);
 
     &:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(167, 215, 184, 0.5);
     }
   }
 }
@@ -73,17 +111,24 @@
 
 .weather-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  
+  background: linear-gradient(135deg, #f6ffdb 0%, #ffffff 100%) !important;
+  border: 1px solid #c9e6b7;
+
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(167, 215, 184, 0.4);
   }
-
   .location-header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     font-size: 1.5rem;
+    color: #00521a;
+    font-weight: 600;
+
+    mat-icon {
+      color: #3da149;
+    }
   }
 
   .weather-main {
@@ -148,6 +193,10 @@
     padding: 1rem 0;
 
     .detail-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
       mat-chip-set {
         display: flex;
         justify-content: center;
@@ -156,10 +205,14 @@
       }
 
       .detail-chip {
-        transition: transform 0.2s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        background-color: #c9e6b7 !important;
+        color: #002106 !important;
+        font-weight: 500;
 
         &:hover {
           transform: scale(1.05);
+          box-shadow: 0 2px 8px rgba(167, 215, 184, 0.4);
         }
       }
     }
@@ -231,21 +284,28 @@
   max-height: 90vh;
   overflow: auto;
   animation: slideUp 0.3s ease;
+  background: linear-gradient(135deg, #f6ffdb 0%, #ffffff 100%) !important;
+  border: 2px solid #b5e1b2;
 
   mat-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-bottom: 1rem;
+    background: linear-gradient(90deg, #c9e6b7 0%, #e5f9c8 100%);
+    border-radius: 4px 4px 0 0;
 
     .modal-title {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      color: #002106;
+      font-weight: 600;
     }
 
     .close-btn {
       transition: transform 0.2s ease;
+      color: #002106;
 
       &:hover {
         transform: rotate(90deg);
@@ -255,7 +315,7 @@
 
   .search-field {
     width: 100%;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
   }
 
   .search-button {
@@ -285,13 +345,22 @@
     .results-title {
       margin: 0 0 1rem 0;
       font-size: 1.125rem;
+      color: #002106;
+      font-weight: 600;
     }
 
     .city-option {
-      transition: background-color 0.2s ease;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.04);
+        background-color: #e5f9c8 !important;
+        transform: translateX(4px);
+      }
+
+      &[aria-selected='true'] {
+        background-color: #c9e6b7 !important;
       }
 
       .city-item-content {

@@ -1,10 +1,12 @@
 <div class="weather-page">
   <mat-toolbar color="primary" class="toolbar">
-    <span class="toolbar-title">Weather App</span>
-    <span class="spacer"></span>
-    <button mat-icon-button (click)="openSearchModal()">
-      <mat-icon>search</mat-icon>
-    </button>
+    <div class="toolbar-content">
+      <h1 class="toolbar-title">Weather App</h1>
+      <button mat-raised-button color="accent" (click)="openSearchModal()" class="search-button">
+        <mat-icon>search</mat-icon>
+        Search City
+      </button>
+    </div>
   </mat-toolbar>
 
   <div class="content">
@@ -178,9 +180,7 @@
           </div>
         </mat-card-content>
       </mat-card>
-      }
-
-      @if (cities().length > 0) {
+      } @if (cities().length > 0) {
       <div class="results-section">
         <h3 class="results-title">Results</h3>
         <mat-selection-list [multiple]="false">
@@ -209,7 +209,12 @@
 
     <mat-card-actions align="end">
       <button mat-button (click)="closeSearchModal()">Cancel</button>
-      <button mat-raised-button color="primary" (click)="confirmCitySelection()" [disabled]="!selectedCity()">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="confirmCitySelection()"
+        [disabled]="!selectedCity()"
+      >
         OK
       </button>
     </mat-card-actions>

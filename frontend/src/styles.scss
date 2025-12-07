@@ -1,25 +1,42 @@
-
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
+// Custom Soft Green palette
+$soft-green-palette: (
+  0: #000000,
+  10: #002106,
+  20: #003910,
+  25: #004515,
+  30: #00521a,
+  35: #005e1f,
+  40: #006b24,
+  50: #218634,
+  60: #3da149,
+  70: #57bc5f,
+  80: #70d876,
+  90: #8af58d,
+  95: #a7d7b8,
+  96: #b5e1b2,
+  98: #c9e6b7,
+  99: #e5f9c8,
+  100: #f6ffdb,
+);
+
 html {
-  @include mat.theme((
-    color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  @include mat.theme(
+    (
+      color: (
+        primary: $soft-green-palette,
+        tertiary: $soft-green-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
 }
 
 body {
   color-scheme: light;
-  background-color: var(--mat-sys-surface);
+  background: linear-gradient(135deg, #a7d7b8 0%, #c9e6b7 50%, #e5f9c8 100%);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
   margin: 0;
@@ -27,12 +44,13 @@ body {
   overflow-x: hidden;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 * {

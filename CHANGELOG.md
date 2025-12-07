@@ -102,3 +102,12 @@ All notable changes to this project will be documented in this file.
 - Made application fully responsive with no white borders - occupies full viewport.
 - Updated `styles.scss` to remove margins/padding and enable full-screen layout.
 - Fixed Angular compiler warning by wrapping `@if/@else` button content in `<ng-container>` tags.
+- **Implemented custom Soft Green color palette**.
+- Created custom Material palette with moss green (#a7d7b8), moss green (#b5e1b2), celadon (#c9e6b7), orinoco (#e5f9c8), and spring sun (#f6ffdb).
+- Applied gradient backgrounds throughout the app using the Soft Green palette.
+- Redesigned toolbar with centered title and prominent search button.
+- Updated toolbar to use flexbox layout that adapts from column (mobile) to row (desktop).
+- Styled weather cards, chips, and modal with Soft Green gradient backgrounds and borders.
+- Enhanced location button with gradient background and prominent styling.
+- Applied palette colors to all interactive elements with improved hover effects.
+- Updated spinner color to match the green theme.
