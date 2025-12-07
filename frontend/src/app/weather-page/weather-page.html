@@ -1,80 +1,121 @@
 <div class="weather-page">
-  <div class="container">
-    <h1>Weather App</h1>
+  <mat-toolbar color="primary" class="toolbar">
+    <span class="toolbar-title">Weather App</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="openSearchModal()">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-toolbar>
 
-    <!-- Search Button -->
-    <div class="search-section">
-      <button (click)="openSearchModal()" class="search-btn"><span>🔍</span> Search City</button>
-    </div>
-
-    <!-- Loading Indicator -->
+  <div class="content">
+    <!-- Loading Spinner -->
     @if (loading()) {
-    <div class="loading">Loading...</div>
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+    </div>
     }
 
     <!-- Error Message -->
-    @if (error()) {
-    <div class="error">{{ error() }}</div>
+    @if (error() && !loading()) {
+    <mat-card class="error-card">
+      <mat-card-content>
+        <div class="error-content">
+          <mat-icon color="warn">error</mat-icon>
+          <span>{{ error() }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
     }
 
     <!-- Request Location Button -->
     @if (!weather() && !loading() && !locationEnabled()) {
-    <button (click)="requestLocation()" class="location-btn">Enable Location</button>
+    <div class="center-content">
+      <button mat-raised-button color="primary" (click)="requestLocation()" class="location-btn">
+        <mat-icon>location_on</mat-icon>
+        Enable Location
+      </button>
+    </div>
     }
 
     <!-- Weather Display -->
     @if (weather() && !loading()) {
-    <div class="weather-display">
-      <div class="location-info">
-        <h2>{{ currentLocation()?.cityName }}</h2>
-      </div>
+    <mat-card class="weather-card">
+      <mat-card-header>
+        <mat-card-title>
+          <div class="location-header">
+            <mat-icon>place</mat-icon>
+            <span>{{ currentLocation()?.cityName }}</span>
+          </div>
+        </mat-card-title>
+      </mat-card-header>
 
-      <div class="weather-main">
-        <div class="temperature">
-          <span class="temp-value">{{ weather()!.mainTemperature }}°C</span>
-          <span class="temp-feels-like">Feels like {{ weather()!.mainFeelsLike }}°C</span>
+      <mat-card-content>
+        <div class="weather-main">
+          <div class="temperature-section">
+            <div class="temp-value">{{ weather()!.mainTemperature }}°C</div>
+            <div class="temp-feels-like">Feels like {{ weather()!.mainFeelsLike }}°C</div>
+          </div>
+
+          <div class="weather-icon-section">
+            <img
+              [src]="'https://openweathermap.org/img/wn/' + weather()!.weatherIcon + '@4x.png'"
+              [alt]="weather()!.weatherDescription"
+              class="weather-icon"
+            />
+            <div class="weather-desc">{{ weather()!.weatherMain }}</div>
+            <div class="weather-desc-detail">{{ weather()!.weatherDescription }}</div>
+          </div>
         </div>
 
-        <div class="weather-icon">
-          <img
-            [src]="'https://openweathermap.org/img/wn/' + weather()!.weatherIcon + '@2x.png'"
-            [alt]="weather()!.weatherDescription"
-          />
-          <p class="weather-desc">{{ weather()!.weatherMain }}</p>
-          <p class="weather-desc-detail">{{ weather()!.weatherDescription }}</p>
-        </div>
-      </div>
+        <mat-divider></mat-divider>
 
-      <div class="weather-details">
-        <div class="detail-item">
-          <span class="detail-label">Min</span>
-          <span class="detail-value">{{ weather()!.mainTempMin }}°C</span>
+        <div class="weather-details">
+          <div class="detail-row">
+            <mat-chip-set>
+              <mat-chip class="detail-chip">
+                <mat-icon matChipAvatar>thermostat</mat-icon>
+                Min: {{ weather()!.mainTempMin }}°C
+              </mat-chip>
+              <mat-chip class="detail-chip">
+                <mat-icon matChipAvatar>thermostat</mat-icon>
+                Max: {{ weather()!.mainTempMax }}°C
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+          <div class="detail-row">
+            <mat-chip-set>
+              <mat-chip class="detail-chip">
+                <mat-icon matChipAvatar>water_drop</mat-icon>
+                Humidity: {{ weather()!.mainHumidity }}%
+              </mat-chip>
+              <mat-chip class="detail-chip">
+                <mat-icon matChipAvatar>compress</mat-icon>
+                Pressure: {{ weather()!.mainPressure }} hPa
+              </mat-chip>
+            </mat-chip-set>
+          </div>
         </div>
-        <div class="detail-item">
-          <span class="detail-label">Max</span>
-          <span class="detail-value">{{ weather()!.mainTempMax }}°C</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Humidity</span>
-          <span class="detail-value">{{ weather()!.mainHumidity }}%</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Pressure</span>
-          <span class="detail-value">{{ weather()!.mainPressure }} hPa</span>
-        </div>
-      </div>
 
-      <div class="sun-times">
-        <div class="sun-item">
-          <span class="sun-label">Sunrise</span>
-          <span class="sun-value">{{ weather()!.sunrise | date : 'shortTime' }}</span>
+        <mat-divider></mat-divider>
+
+        <div class="sun-times">
+          <div class="sun-item">
+            <mat-icon color="accent">wb_sunny</mat-icon>
+            <div class="sun-info">
+              <span class="sun-label">Sunrise</span>
+              <span class="sun-value">{{ weather()!.sunrise | date : 'shortTime' }}</span>
+            </div>
+          </div>
+          <div class="sun-item">
+            <mat-icon color="accent">nightlight</mat-icon>
+            <div class="sun-info">
+              <span class="sun-label">Sunset</span>
+              <span class="sun-value">{{ weather()!.sunset | date : 'shortTime' }}</span>
+            </div>
+          </div>
         </div>
-        <div class="sun-item">
-          <span class="sun-label">Sunset</span>
-          <span class="sun-value">{{ weather()!.sunset | date : 'shortTime' }}</span>
-        </div>
-      </div>
-    </div>
+      </mat-card-content>
+    </mat-card>
     }
   </div>
 </div>
@@ -82,57 +123,96 @@
 <!-- Search Modal -->
 @if (showSearchModal()) {
 <div class="modal-overlay" (click)="closeSearchModal()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <h2>Search City</h2>
-      <button class="close-btn" (click)="closeSearchModal()">✕</button>
-    </div>
+  <mat-card class="modal-card" (click)="$event.stopPropagation()">
+    <mat-card-header>
+      <mat-card-title>
+        <div class="modal-title">
+          <mat-icon>search</mat-icon>
+          <span>Search City</span>
+        </div>
+      </mat-card-title>
+      <button mat-icon-button class="close-btn" (click)="closeSearchModal()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-card-header>
 
-    <div class="modal-body">
-      <div class="search-input-group">
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Enter city name</mat-label>
         <input
-          type="text"
+          matInput
           [ngModel]="searchQuery()"
           (ngModelChange)="searchQuery.set($event)"
-          placeholder="Enter city name..."
-          class="modal-search-input"
+          placeholder="e.g., London, Paris, New York"
           (keyup.enter)="searchCities()"
         />
-        <button (click)="searchCities()" class="search-submit-btn" [disabled]="searchLoading()">
-          @if (searchLoading()) { Searching... } @else { Search }
-        </button>
-      </div>
+        <mat-icon matSuffix>location_city</mat-icon>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="searchCities()"
+        [disabled]="searchLoading() || !searchQuery()"
+        class="search-button"
+      >
+        @if (searchLoading()) {
+        <ng-container>
+          <mat-spinner diameter="20"></mat-spinner>
+          Searching...
+        </ng-container>
+        } @else {
+        <ng-container>
+          <mat-icon>search</mat-icon>
+          Search
+        </ng-container>
+        }
+      </button>
 
       @if (searchError()) {
-      <div class="search-error">{{ searchError() }}</div>
-      } @if (cities().length > 0) {
-      <div class="city-list">
-        <h3>Results</h3>
-        @for (city of cities(); track city.name) {
-        <div
-          class="city-list-item"
-          [class.selected]="selectedCity()?.name === city.name"
-          (click)="onCitySelect(city)"
-        >
-          <div class="city-info">
-            <span class="city-name">{{ city.name }}</span>
-            @if (city.state) {
-            <span class="city-state">, {{ city.state }}</span>
-            }
+      <mat-card class="search-error-card">
+        <mat-card-content>
+          <div class="error-content">
+            <mat-icon color="warn">error</mat-icon>
+            <span>{{ searchError() }}</span>
           </div>
-          <span class="city-country">{{ city.country }}</span>
-        </div>
-        }
+        </mat-card-content>
+      </mat-card>
+      }
+
+      @if (cities().length > 0) {
+      <div class="results-section">
+        <h3 class="results-title">Results</h3>
+        <mat-selection-list [multiple]="false">
+          @for (city of cities(); track city.name) {
+          <mat-list-option
+            [value]="city"
+            [selected]="selectedCity()?.name === city.name"
+            (click)="onCitySelect(city)"
+            class="city-option"
+          >
+            <div class="city-item-content">
+              <div class="city-info">
+                <span class="city-name">{{ city.name }}</span>
+                @if (city.state) {
+                <span class="city-state">, {{ city.state }}</span>
+                }
+              </div>
+              <span class="city-country">{{ city.country }}</span>
+            </div>
+          </mat-list-option>
+          }
+        </mat-selection-list>
       </div>
       }
-    </div>
+    </mat-card-content>
 
-    <div class="modal-footer">
-      <button (click)="closeSearchModal()" class="cancel-btn">Cancel</button>
-      <button (click)="confirmCitySelection()" class="confirm-btn" [disabled]="!selectedCity()">
+    <mat-card-actions align="end">
+      <button mat-button (click)="closeSearchModal()">Cancel</button>
+      <button mat-raised-button color="primary" (click)="confirmCitySelection()" [disabled]="!selectedCity()">
         OK
       </button>
-    </div>
-  </div>
+    </mat-card-actions>
+  </mat-card>
 </div>
 }

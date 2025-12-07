@@ -94,3 +94,11 @@ All notable changes to this project will be documented in this file.
 - Added tests for modal operations (open, close, city selection, confirmation).
 - Updated signal mutations in tests to use `.set()` method.
 - Fixed `app.spec.ts` test to verify router-outlet presence instead of non-existent h1 element.
+- **Integrated Angular Material throughout the application**.
+- Replaced custom UI components with Material components (toolbar, cards, buttons, icons, form fields, lists, chips).
+- Added Material modules: `MatButtonModule`, `MatCardModule`, `MatIconModule`, `MatProgressSpinnerModule`, `MatDialogModule`, `MatFormFieldModule`, `MatInputModule`, `MatListModule`, `MatToolbarModule`, `MatDividerModule`, `MatChipsModule`.
+- Reduced custom CSS from ~570 lines to ~330 lines by leveraging Material's built-in styling.
+- Implemented hover animations on all interactive elements (buttons, cards, chips, icons).
+- Made application fully responsive with no white borders - occupies full viewport.
+- Updated `styles.scss` to remove margins/padding and enable full-screen layout.
+- Fixed Angular compiler warning by wrapping `@if/@else` button content in `<ng-container>` tags.
